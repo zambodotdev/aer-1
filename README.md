@@ -12,3 +12,12 @@ https://datatracker.ietf.org/doc/draft-zambo-aer1/26/
 Independent implementations in multiple languages were built from the draft text alone.
 
 Author: Brennan Zambo (Zambo). Main code home: https://gitlab.com/rambozambodotdev/zambo — this GitHub repo is the public pointer for the standard.
+## Run the conformance corpus
+
+This repo carries the corpus index (corpus.json: 126 vectors, 129 checks, kit v1.5.7) and the two reference runners, conformance.py and conformance.js. The canonical, always-current corpus is served at https://zambo.dev/aer1/corpus.json — the runners take the full corpus by default; pass --base-only for the 119-vector base set.
+
+## Verify a receipt in 60 seconds
+
+Open verify-a-receipt.ipynb in a notebook runner and run the cells: it fetches a real receipt from the live stream and recomputes its SHA-256 digest with the Python standard library.
+
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zambodotdev/aer-1/blob/main/verify-a-receipt.ipynb)
