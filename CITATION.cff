@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use AER-1, please cite it as below."
+title: "AER-1: Agent Execution Receipts"
+authors:
+  - family-names: Zambo
+    given-names: Brennan
+date-released: 2026-10-22
+url: "https://datatracker.ietf.org/doc/draft-zambo-aer1/26/"
+abstract: "AER-1 defines the agent execution receipt: a verifiable record of one AI agent tool call, keeping the exact saved bytes and their SHA-256 digest, proving the saved result was not changed since it was saved."
