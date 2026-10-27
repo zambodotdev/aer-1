@@ -21,3 +21,8 @@ This repo carries the corpus index (corpus.json: 126 vectors, 129 checks, kit v1
 Open verify-a-receipt.ipynb in a notebook runner and run the cells: it fetches a real receipt from the live stream and recomputes its SHA-256 digest with the Python standard library.
 
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zambodotdev/aer-1/blob/main/verify-a-receipt.ipynb)
+
+---
+next step: add zambo to your ai in one url, no key, no account: https://zambo.dev/add/?ref=aer-1
+got a receipt link from someone? check it in seconds: https://zambo.dev/verify/
+every call returns a receipt. a receipt proves the saved bytes are unchanged. it does not prove the answer is right.
