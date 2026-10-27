@@ -4,6 +4,7 @@ AER-1 is the open standard for agent execution receipts: a record of one AI agen
 
 Current draft: draft-zambo-aer1-26 (IETF Internet-Draft, posted October 22, 2026)
 https://datatracker.ietf.org/doc/draft-zambo-aer1/26/
+Cite AER-1: https://doi.org/10.5281/zenodo.23677115
 
 - Conformance corpus: https://zambo.dev/aer1/corpus.json (126 test vectors, 129 checks, kit v1.5.7)
 - Verify a receipt: https://zambo.dev/verify/
