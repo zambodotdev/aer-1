@@ -1,0 +1,35 @@
+name: aer-1 interop nightly
+on:
+  schedule: [{cron: "17 7 * * *"}]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - uses: actions/setup-node@v4
+        with: {node-version: "20"}
+      - run: git clone --depth 1 https://gitlab.com/rambozambodotdev/zambo.git src
+      - run: cd src/aer-1/cross-verify && python3 cross_verify.py --out ../../../out || echo "DISAGREE=1" >> $GITHUB_ENV
+      - run: |
+          mkdir -p site/badge
+          REV=$(curl -s "https://datatracker.ietf.org/api/v1/doc/document/?name=draft-zambo-aer1&format=json" | python3 -c "import json,sys;print(json.load(sys.stdin)['objects'][0]['rev'])")
+          python3 - <<'PY' "$REV"
+          import json,sys,os,html
+          m=json.load(open('out/matrix.json'));rev=sys.argv[1]
+          ok=m['disagreements']==0 and m['mismatches']==0
+          impl=json.load(open('src/aer-1/implementations.json'))['implementations']
+          for i in impl:
+              slug=''.join(c if c.isalnum() else '-' for c in i['name'].lower()).strip('-')
+              json.dump({"schemaVersion":1,"label":"aer-1 interop","message":("listed, -"+rev),"color":"brightgreen" if i.get('status')=='verified' else "lightgrey"},open(f'site/badge/{slug}.json','w'))
+          json.dump({"schemaVersion":1,"label":"aer-1 interop","message":"passing" if ok else "disagreement","color":"brightgreen" if ok else "red"},open('site/badge/matrix.json','w'))
+          rows=''.join(f"<tr><td>{html.escape(i['name'])}</td><td>{html.escape(i.get('language',''))}</td><td>{html.escape(i.get('status',''))}</td><td><a href='{html.escape(i.get('code_url',''))}'>code</a></td></tr>" for i in impl)
+          open('site/index.html','w').write(f"""<!doctype html><meta charset=utf-8><title>AER-1 live interop matrix</title><link rel=canonical href=https://zambodotdev.github.io/aer-1/><body style='font:16px system-ui;max-width:900px;margin:40px auto;padding:0 20px'><h1>aer-1 live interop matrix</h1><p>re-run every night against the latest draft (draft-zambo-aer1-{rev}). generated {m['generated_at']}. vectors {m['total_vectors']}, disagreements {m['disagreements']}, mismatches {m['mismatches']}. verifiers run: {', '.join(m['verifiers_run'])}.</p><table border=1 cellpadding=6>{rows}</table><p>implementing aer-1? add yourself: https://github.com/zambodotdev/aer-1/discussions/categories/implementations</p><p>check any receipt: <a href=https://zambo.dev/verify/>zambo.dev/verify</a> · add zambo to your ai: <a href=https://zambo.dev/add/?ref=interop>zambo.dev/add</a></p>""")
+          PY
+          cp out/matrix.json site/matrix.json
+      - uses: peaceiris/actions-gh-pages@v4
+        with: {github_token: "${{ secrets.GITHUB_TOKEN }}", publish_dir: ./site}
+      - run: test -z "$DISAGREE"
