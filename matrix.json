@@ -1,0 +1,1027 @@
+{
+  "generated_at": "2026-10-27T18:42:44Z",
+  "draft": "draft-zambo-aer1-24",
+  "corpus": "/home/runner/work/aer-1/aer-1/src/aer-1/test-vectors",
+  "verifiers_run": [
+    "javascript",
+    "python"
+  ],
+  "verifiers_untested": [],
+  "total_vectors": 52,
+  "disagreements": 0,
+  "mismatches": 0,
+  "rows": [
+    {
+      "corpus": "valid",
+      "file": "bound-04.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "feb29-leap.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "fraction-one-digit.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "input-hash-multikey-20.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "legacy-02.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "legacy-03.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "legacy-real-2.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "optional-members-18.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "real-04.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "real-1-bare.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "receipt-01.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "receipt-02.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "receipt-03-live.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "ax-base64-unpadded.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "canonical_bytes is not valid base64"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "canonical_bytes is not valid base64"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "ax-feb29-1900.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not a valid calendar date/time"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not a valid calendar date/time"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "ax-feb29-non-leap.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not a valid calendar date/time"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not a valid calendar date/time"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "ax-tool-empty-scope.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "tool is not an object with name/version/scope strings"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "tool is not an object with name/version/scope strings"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "bad-created-at.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not RFC 3339"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not RFC 3339"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "bad-id.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "id is not a lowercase UUID"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "id is not a lowercase UUID"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "bad-offset-range.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not a valid calendar date/time"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not a valid calendar date/time"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "bad-provenance.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "provenance_class is not a known class"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "provenance_class is not a known class"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "bad-verification-status.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "verification_status is not verified"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "verification_status is not verified"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "base64-pad-bit.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "canonical_bytes is not the canonical base64 spelling"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "canonical_bytes is not the canonical base64 spelling"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "base64-unpadded.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "canonical_bytes is not valid base64"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "canonical_bytes is not valid base64"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "bytes-not-base64.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "canonical_bytes is not valid base64"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "canonical_bytes is not valid base64"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "duplicate-member-name.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "duplicate member name: output_hash"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "duplicate member name: output_hash"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "feb29-1900.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not a valid calendar date/time"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not a valid calendar date/time"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "feb29-non-leap.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not a valid calendar date/time"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not a valid calendar date/time"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "hash-bad-format.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "output_hash is not sha256: + lowercase hex digest"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "output_hash is not sha256: + lowercase hex digest"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "hash-mismatch.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "output_hash does not match sha256(canonical_bytes)"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "output_hash does not match sha256(canonical_bytes)"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "id-trailing-newline.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "id is not a lowercase UUID"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "id is not a lowercase UUID"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "impossible-date.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not a valid calendar date/time"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not a valid calendar date/time"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "input-hash-key-order-20.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "input_hash does not match sha256(canonical JSON of the recorded inputs)"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "input_hash does not match sha256(canonical JSON of the recorded inputs)"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "input-hash-mismatch.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "input_hash does not match sha256(canonical JSON of the recorded inputs)"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "input_hash does not match sha256(canonical JSON of the recorded inputs)"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "leap-second-created-at.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not a valid calendar date/time"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not a valid calendar date/time"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "missing-output-hash.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "missing required member: output_hash"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "missing required member: output_hash"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "nil-uuid.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "id is the nil UUID"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "id is the nil UUID"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "non-utf8-bytes.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "canonical_bytes is not valid UTF-8"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "canonical_bytes is not valid UTF-8"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "provenance-control-char.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "provenance_class is not a known class"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "provenance_class is not a known class"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "provenance-trailing-newline.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "provenance_class is not a known class"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "provenance_class is not a known class"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "tampered-provenance.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "provenance binding: outer \"LOGGED BY AGENT\" does not match committed \"EXECUTED BY ZAMBO\""
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "provenance binding: outer \"LOGGED BY AGENT\" does not match committed \"EXECUTED BY ZAMBO\""
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "tool-empty-name.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "tool is not an object with name/version/scope strings"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "tool is not an object with name/version/scope strings"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "tool-not-object.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "tool is not an object with name/version/scope strings"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "tool is not an object with name/version/scope strings"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "uppercase-id.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "id is not a lowercase UUID"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "id is not a lowercase UUID"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "version-downgrade.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "receipt_schema_version: outer \"0.3\" does not match committed \"0.4\""
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "receipt_schema_version: outer \"0.3\" does not match committed \"0.4\""
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid-profile",
+      "file": "missing-inputs.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "anchored",
+      "file": "anchored-bad-id-version.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "anchored",
+      "file": "anchored-bad-leaf-hash.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "anchored",
+      "file": "anchored-bad-timestamp.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "anchored",
+      "file": "anchored-missing-proof.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "anchored",
+      "file": "anchored-unresolvable-anchor.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "anchored",
+      "file": "anchored-valid.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    }
+  ]
+}
