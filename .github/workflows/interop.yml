@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-node@v4
         with: {node-version: "20"}
       - run: git clone --depth 1 https://gitlab.com/rambozambodotdev/zambo.git src
-      - run: cd src/aer-1/cross-verify && python3 cross_verify.py --out ../../../out || echo "DISAGREE=1" >> $GITHUB_ENV
+      - run: mkdir -p out && cd src/aer-1/cross-verify && python3 cross_verify.py --out ../../../out || echo "DISAGREE=1" >> $GITHUB_ENV
       - run: |
           mkdir -p site/badge
           REV=$(curl -s "https://datatracker.ietf.org/api/v1/doc/document/?name=draft-zambo-aer1&format=json" | python3 -c "import json,sys;print(json.load(sys.stdin)['objects'][0]['rev'])")
