@@ -1,0 +1,25 @@
+name: Add my AER-1 implementation
+description: List your producer or verifier on the live interop matrix
+labels: [implementation]
+body:
+  - type: input
+    id: name
+    attributes: {label: Implementation name}
+    validations: {required: true}
+  - type: input
+    id: code
+    attributes: {label: Public code URL}
+    validations: {required: true}
+  - type: input
+    id: lang
+    attributes: {label: Language}
+  - type: input
+    id: rev
+    attributes: {label: Draft revision targeted (for example 26)}
+  - type: checkboxes
+    id: ok
+    attributes:
+      label: Confirm
+      options:
+        - label: I ran conformance.py or conformance.js and am happy for this listing to be public
+          required: true
