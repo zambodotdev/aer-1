@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-02T17:08:53Z",
+  "generated_at": "2026-11-03T15:14:34Z",
   "draft": "draft-zambo-aer1-26",
   "corpus": "/home/runner/work/aer-1/aer-1/src/base/test-vectors",
   "verifiers_run": [
@@ -7,13 +7,64 @@
     "python"
   ],
   "verifiers_untested": [],
-  "total_vectors": 52,
+  "total_vectors": 64,
   "disagreements": 0,
   "mismatches": 0,
   "rows": [
     {
       "corpus": "valid",
       "file": "bound-04.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "deep-nesting.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "edge-numbers.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "empty-members.json",
       "expected": "pass",
       "results": {
         "python": {
@@ -81,6 +132,23 @@
     },
     {
       "corpus": "valid",
+      "file": "large-payload.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
       "file": "legacy-02.json",
       "expected": "pass",
       "results": {
@@ -116,6 +184,40 @@
     {
       "corpus": "valid",
       "file": "legacy-real-2.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "maximum-offset-timestamp.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "metadata-hash-non-ascii-tool.json",
       "expected": "pass",
       "results": {
         "python": {
@@ -218,6 +320,40 @@
     {
       "corpus": "valid",
       "file": "receipt-03-live.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "typographic-unicode.json",
+      "expected": "pass",
+      "results": {
+        "python": {
+          "verdict": "pass",
+          "reasons": []
+        },
+        "javascript": {
+          "verdict": "pass",
+          "reasons": []
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "valid",
+      "file": "uuid-v1-core.json",
       "expected": "pass",
       "results": {
         "python": {
@@ -696,6 +832,27 @@
     },
     {
       "corpus": "invalid",
+      "file": "lowercase-timestamp.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not RFC 3339"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not RFC 3339"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
       "file": "missing-output-hash.json",
       "expected": "fail",
       "results": {
@@ -759,6 +916,50 @@
     },
     {
       "corpus": "invalid",
+      "file": "payload-is-array.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "receipt_schema_version: one side missing (outer=\"0.4\" committed=null)",
+            "provenance binding: canonical payload did not decode to an object"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "receipt_schema_version: one side missing (outer=\"0.4\" committed=null)",
+            "provenance binding: canonical payload did not decode to an object"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "payload-omits-issuer-claims.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "provenance binding: one side missing (outer=\"EXECUTED BY ZAMBO\" committed=null)"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "provenance binding: one side missing (outer=\"EXECUTED BY ZAMBO\" committed=null)"
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
       "file": "provenance-control-char.json",
       "expected": "fail",
       "results": {
@@ -814,6 +1015,27 @@
           "verdict": "fail",
           "reasons": [
             "provenance binding: outer \"LOGGED BY AGENT\" does not match committed \"EXECUTED BY ZAMBO\""
+          ]
+        }
+      },
+      "implementations_agree": true,
+      "matches_expected": true
+    },
+    {
+      "corpus": "invalid",
+      "file": "timestamp-no-timezone.json",
+      "expected": "fail",
+      "results": {
+        "python": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not RFC 3339"
+          ]
+        },
+        "javascript": {
+          "verdict": "fail",
+          "reasons": [
+            "created_at is not RFC 3339"
           ]
         }
       },
