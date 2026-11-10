@@ -39,7 +39,7 @@ every call returns a receipt. a receipt proves the saved bytes are unchanged. it
 npm install aer-1
 ```
 
-The aer-1 package on npm (3,119 downloads last month) creates and checks AER-1 receipts in Node: the same format the live Zambo endpoint issues on every call at https://zambo.dev/mcp.
+The aer-1 package on npm creates and checks AER-1 receipts in Node: the same format the live Zambo endpoint issues on every call at https://zambo.dev/mcp.
 
 Add Zambo to your AI in one URL, no key, no account: https://zambo.dev/add/
 Free tier: 20 calls and 1 wrap-up free every day, and picking up in another AI is always free. Need more? The $0.99 Day Pass makes it unlimited for 24 hours.
