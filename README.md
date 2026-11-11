@@ -5,13 +5,14 @@
 [![IETF drafts](https://img.shields.io/endpoint?url=https://rambozambodotdev.gitlab.io/aer1-hub/badges/drafts.json)](https://datatracker.ietf.org/doc/draft-zambo-aer1/)
 [![AER-1 corpus](https://img.shields.io/endpoint?url=https://rambozambodotdev.gitlab.io/aer1-hub/badges/corpus.json)](https://zambo.dev/aer1/corpus.json)
 
-AER-1 is the open standard for agent execution receipts: a record of one AI agent tool call that anyone can check. It keeps the exact saved bytes and their SHA-256 digest, and it proves the saved result was not changed since it was saved.
+AER-1 is an open format for agent execution receipts, published as an IETF Internet-Draft: a record of one AI agent tool call that anyone can check. It keeps the exact saved bytes and their SHA-256 digest, and it proves the saved result was not changed since it was saved.
 
 Current draft: draft-zambo-aer1-26 (IETF Internet-Draft, posted October 22, 2026)
 https://datatracker.ietf.org/doc/draft-zambo-aer1/26/
 Cite AER-1: https://doi.org/10.5281/zenodo.23677115
 
 - Conformance corpus: https://zambo.dev/aer1/corpus.json (143 test vectors, 146 checks, kit v1.5.7)
+- Implementations registry: https://rambozambodotdev.gitlab.io/registry.html
 - Verify a receipt: https://zambo.dev/verify/
 - Live implementation and receipts: https://zambo.dev
 
@@ -20,7 +21,7 @@ Independent implementations in multiple languages were built from the draft text
 Author: Brennan Zambo (Zambo). Main code home: https://gitlab.com/rambozambodotdev/zambo, and this GitHub repo is the public pointer for the standard.
 ## Run the conformance corpus
 
-This repo carries the corpus index (corpus.json: 126 vectors, 129 checks, kit v1.5.7) and the two reference runners, conformance.py and conformance.js. The canonical, always-current corpus is served at https://zambo.dev/aer1/corpus.json, and the runners take the full corpus by default; pass --base-only for the 119-vector base set.
+This repo carries a bundled snapshot of the corpus index (corpus.json: 126 vectors, 129 checks, kit v1.5.7) and the two reference runners, conformance.py and conformance.js. The canonical, always-current corpus is served at https://zambo.dev/aer1/corpus.json, and the runners take the full corpus by default; pass --base-only for the 119-vector base set.
 
 ## Verify a receipt in 60 seconds
 
