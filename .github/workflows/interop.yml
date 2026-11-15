@@ -8,6 +8,7 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - uses: actions/setup-node@v4
@@ -27,9 +28,122 @@ jobs:
               json.dump({"schemaVersion":1,"label":"aer-1 interop","message":("listed, -"+rev),"color":"brightgreen" if i.get('status')=='verified' else "lightgrey"},open(f'site/badge/{slug}.json','w'))
           json.dump({"schemaVersion":1,"label":"aer-1 interop","message":"passing" if ok else "disagreement","color":"brightgreen" if ok else "red"},open('site/badge/matrix.json','w'))
           rows=''.join(f"<tr><td>{html.escape(i['name'])}</td><td>{html.escape(i.get('language',''))}</td><td>{html.escape(i.get('status',''))}</td><td><a href='{html.escape(i.get('code_url',''))}'>code</a></td></tr>" for i in impl)
-          open('site/index.html','w').write(f"""<!doctype html><meta charset=utf-8><title>AER-1 live interop matrix</title><link rel=canonical href=https://zambodotdev.github.io/aer-1/><body style='font:16px system-ui;max-width:900px;margin:40px auto;padding:0 20px'><h1>aer-1 live interop matrix</h1><p>re-run every night against the latest draft (draft-zambo-aer1-{rev}). generated {m['generated_at']}. vectors {m['total_vectors']}, disagreements {m['disagreements']}, mismatches {m['mismatches']}. verifiers run: {', '.join(m['verifiers_run'])}.</p><table border=1 cellpadding=6>{rows}</table><p>implementing aer-1? add yourself: https://github.com/zambodotdev/aer-1/discussions/categories/implementations</p><p>check any receipt: <a href=https://zambo.dev/verify/>zambo.dev/verify</a> · add zambo to your ai: <a href=https://zambo.dev/add/?ref=interop>zambo.dev/add</a></p>""")
+          head='''<!DOCTYPE html>
+          <html lang="en">
+          <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>AER-1 live interop matrix</title>
+          <meta name="description" content="Independent AER-1 verifiers and validators, checked against the draft-zambo-aer1-26 conformance corpus, rebuilt nightly.">
+          <link rel="canonical" href="https://zambodotdev.github.io/aer-1/">
+          <meta property="og:title" content="AER-1 live interop matrix">
+          <meta property="og:description" content="Independent AER-1 verifiers and validators, checked against the draft-zambo-aer1-26 conformance corpus, rebuilt nightly.">
+          <meta property="og:type" content="website">
+          <meta property="og:url" content="https://zambodotdev.github.io/aer-1/">
+          <meta property="og:image" content="https://zambodotdev.github.io/aer-1/og.png">
+          <meta property="og:image:width" content="1280">
+          <meta property="og:image:height" content="640">
+          <meta name="twitter:card" content="summary_large_image">
+          <meta name="twitter:title" content="AER-1 live interop matrix">
+          <meta name="twitter:description" content="Independent AER-1 verifiers and validators, checked against the draft-zambo-aer1-26 conformance corpus, rebuilt nightly.">
+          <meta name="twitter:image" content="https://zambodotdev.github.io/aer-1/og.png">
+          <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0a08'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23c6ff3d'/%3E%3C/svg%3E">
+          <style>
+          :root{color-scheme:dark;--bg:#0a0a08;--ink:#f4f5ef;--lime:#c6ff3d;--card:#171813;--line:#34382c;--mut:#a7ab9c;--dim:#767b6a;--mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace}
+          *{box-sizing:border-box}
+          body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+          a{color:var(--lime)}
+          ::selection{background:var(--lime);color:#0a0a08}
+          .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+          header{position:sticky;top:0;z-index:20;background:rgba(10,10,8,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+          .bar{display:flex;align-items:center;gap:28px;height:60px}
+          .wordmark{font-weight:800;letter-spacing:.14em;font-size:17px;color:var(--ink);text-decoration:none;white-space:nowrap}
+          .wordmark i{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--lime);margin-right:9px}
+          nav{display:flex;gap:22px;margin-left:auto}
+          nav a{color:var(--mut);text-decoration:none;font-size:15px;font-weight:550}
+          nav a:hover{color:var(--ink)}
+          .btn{display:inline-block;background:var(--lime);color:#0d0f05;text-decoration:none;font-weight:700;padding:11px 20px;border-radius:999px;font-size:15px;border:1px solid var(--lime);white-space:nowrap}
+          .btn:hover{background:#d4ff70}
+          .btn.small{padding:8px 16px;font-size:14px}
+          header .btn{margin-left:6px}
+          @media (max-width:720px){nav{gap:14px}nav a:nth-child(2){display:none}.bar{gap:16px}header .btn{padding:8px 13px;font-size:13.5px}}
+          @media (max-width:560px){nav{display:none}}
+          .kicker{font-family:var(--mono);font-size:12.5px;letter-spacing:.22em;color:var(--lime);text-transform:uppercase;margin:44px 0 0}
+          h1{font-size:clamp(30px,4.6vw,44px);font-weight:800;line-height:1.1;letter-spacing:-.015em;margin:12px 0 10px}
+          .sub{color:var(--mut);font-size:17px;line-height:1.6;margin:0;max-width:760px}
+          .stats{font-family:var(--mono);font-size:13.5px;color:var(--dim);margin:14px 0 0;line-height:1.7}
+          .stats b{color:var(--mut);font-weight:600}
+          .tablewrap{margin-top:26px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto}
+          table{width:100%;border-collapse:collapse;min-width:560px}
+          th{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);background:#101108}
+          td{padding:13px 16px;border-bottom:1px solid #23251d;font-size:15.5px;vertical-align:top}
+          tr:last-child td{border-bottom:0}
+          td:nth-child(3){font-family:var(--mono);font-size:13.5px;color:var(--mut);white-space:nowrap;padding-top:15px}
+          td a{text-decoration:none;font-weight:600}
+          td a:hover{text-decoration:underline}
+          .challenge{margin-top:34px;background:var(--card);border:1px solid var(--lime);border-radius:16px;padding:24px}
+          .challenge .ck{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:var(--lime);text-transform:uppercase}
+          .challenge h2{font-size:21px;margin:10px 0 8px}
+          .challenge p{color:var(--mut);font-size:15.5px;line-height:1.55;margin:0 0 16px;max-width:700px}
+          .linksrow{margin-top:26px;color:var(--mut);font-size:15.5px;line-height:1.7}
+          footer{margin-top:64px;border-top:1px solid var(--line);padding:38px 0 52px}
+          .binding{font-size:19px;line-height:1.55;font-weight:650;max-width:820px;margin:0}
+          .binding span{color:var(--lime)}
+          .fineprint{color:var(--dim);font-size:14px;line-height:1.65;margin-top:18px;max-width:820px}
+          .foot-links{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:20px;font-size:14.5px}
+          .foot-links a{color:var(--mut);text-decoration:none}
+          .foot-links a:hover{color:var(--lime)}
+          </style>
+          </head>
+          <body>
+          <header>
+          <div class="wrap bar">
+          <a class="wordmark" href="/"><i></i>ZAMBO</a>
+          <nav>
+          <a href="https://zambodotdev.github.io/receipt-scan/">Receipt Scan</a>
+          <a href="https://zambodotdev.github.io/aer-1/">Interop</a>
+          <a href="https://zambo.dev/verify/">Verify</a>
+          <a href="https://github.com/zambodotdev">GitHub</a>
+          </nav>
+          <a class="btn small" href="https://zambo.dev/add/">Add Zambo</a>
+          </div>
+          </header>
+          <main class="wrap">
+          <p class="kicker">Zambo · AER-1 · Interop</p>
+          <h1>AER-1 live interop matrix</h1>
+          '''
+          mid=f"""<p class="sub">Independent AER-1 verifiers and validators, checked against the draft-zambo-aer1-{rev} conformance corpus, rebuilt nightly.</p>
+          <p class="stats">generated <b>{m['generated_at']}</b> · vectors <b>{m['total_vectors']}</b> · disagreements <b>{m['disagreements']}</b> · mismatches <b>{m['mismatches']}</b> · verifiers run: <b>{', '.join(m['verifiers_run'])}</b></p>
+          <div class="tablewrap"><table><thead><tr><th>Name</th><th>Language</th><th>Status</th><th>Code</th></tr></thead><tbody>{rows}</tbody></table></div>
+          <div class="challenge">
+          <span class="ck">The conformance challenge</span>
+          <h2>Run the kit yourself</h2>
+          <p>The conformance challenge is open on GitHub: take the AER-1 kit, run the corpus, publish your score. The standard does not ask to be trusted. It asks to be run.</p>
+          <a class="btn" href="https://github.com/zambodotdev/aer-1/issues/4">Take the challenge</a>
+          </div>
+          <p class="linksrow">Built a verifier or validator? <a href="https://github.com/zambodotdev/aer-1/discussions/categories/implementations">Add it here</a>.<br>
+          Check any receipt: <a href="https://zambo.dev/verify/">zambo.dev/verify</a> · Add Zambo to your AI: <a href="https://zambo.dev/add/?ref=interop">zambo.dev/add</a></p>
+          """
+          foot='''<footer>
+          <p class="binding"><span>Brennan Zambo</span> created agent execution receipts. <span>Zambo</span> is the origin product. <span>AER-1</span> is the defining standard.</p>
+          <p class="fineprint">AER-1 is an IETF Internet-Draft (draft-zambo-aer1-26), not a finalized standard. This matrix is rebuilt nightly; each row reports what that verifier or validator actually ran. A Zambo receipt proves the saved result was not changed since it was saved, not that the result was right.</p>
+          <div class="foot-links">
+          <a href="https://zambodotdev.github.io/">Zambo on GitHub</a>
+          <a href="https://zambo.dev/add/?ref=interop">Add Zambo</a>
+          <a href="https://zambo.dev/verify/">Verify</a>
+          <a href="https://zambodotdev.github.io/receipt-scan/">Receipt Scan</a>
+          <a href="https://github.com/zambodotdev">GitHub</a>
+          <a href="https://datatracker.ietf.org/doc/draft-zambo-aer1/26/">AER-1 at the IETF</a>
+          </div>
+          </footer>
+          </main>
+          </body>
+          </html>
+          '''
+          open('site/index.html','w').write(head+mid+foot)
           PY
           cp out/matrix.json site/matrix.json
+          cp og.png site/og.png
       - uses: peaceiris/actions-gh-pages@v4
         with: {github_token: "${{ secrets.GITHUB_TOKEN }}", publish_dir: ./site}
       - run: test -z "$DISAGREE"
