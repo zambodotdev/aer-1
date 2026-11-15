@@ -119,7 +119,8 @@ from a live endpoint, produce a real receipt and check it:
 Add that to your MCP client (per-client steps at https://zambo.dev/add),
 make any call, and open the receipt link the call returns. There is no
 signup and no key needed to start, the first call lands in seconds, and the
-free tier is 20 free calls per day, then they upgrade. One worked example,
+free tier is this: Every tool free once a day, plus 3 continue calls. One
+free wrap-up handover per day, and pickup is always free. One worked example,
 already public: https://zambo.dev/run/ef28b4c2-4355-479e-bd43-22a05122a574
 
 Why the receipt exists even when a call is rejected is covered in

@@ -57,7 +57,7 @@ client:
 
 Per-client steps are at https://zambo.dev/add. No signup and no key are
 needed to start, the first call lands in seconds.
-The free tier is 20 free calls per day, then they upgrade.
+The free tier is this: Every tool free once a day, plus 3 continue calls. One free wrap-up handover per day, and pickup is always free.
 Now make a call with malformed
 arguments, for example a memory write with an empty fact. The call is
 rejected, and the rejection still returns a receipt link. Open it: the

@@ -37,7 +37,8 @@ To produce records of your own to check, add the endpoint to an MCP client:
 
 Per-client steps are at https://zambo.dev/add. No signup, no key
 needed, first call in seconds; the free tier is
-20 free calls per day, then they upgrade. This vocabulary is specified
+this: Every tool free once a day, plus 3 continue calls. One free wrap-up
+handover per day, and pickup is always free. This vocabulary is specified
 in AER-1 Section 6, so other record systems can report the same states
 the same way.
 
