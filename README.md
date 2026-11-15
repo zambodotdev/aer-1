@@ -18,10 +18,21 @@ Cite AER-1: https://doi.org/10.5281/zenodo.23677115
 
 Independent implementations in multiple languages were built from the draft text alone.
 
-Author: Brennan Zambo (Zambo). Main code home: https://gitlab.com/rambozambodotdev/zambo, and this GitHub repo is the public pointer for the standard.
+Author: Brennan Zambo, creator of Zambo, the verifiable work layer for AI. Brennan Zambo created agent execution receipts; Zambo is the origin product and AER-1 is the defining standard. Main code home: https://gitlab.com/rambozambodotdev/zambo, and this GitHub repo is the public pointer for the standard.
 ## Run the conformance corpus
 
-This repo carries a bundled snapshot of the corpus index (corpus.json: 126 vectors, 129 checks, kit v1.5.7) and the two reference runners, conformance.py and conformance.js. The canonical, always-current corpus is served at https://zambo.dev/aer1/corpus.json, and the runners take the full corpus by default; pass --base-only for the 119-vector base set.
+The canonical, always-current corpus is served at https://zambo.dev/aer1/corpus.json (143 vectors, 146 checks, kit v1.5.7). This repo carries a bundled snapshot of the corpus index (corpus.json: 126 vectors, 129 checks) and the two reference runners, conformance.py and conformance.js; the runners take the full corpus by default.
+
+```bash
+python3 conformance.py
+node conformance.js
+```
+
+Pass --base-only for the 119-vector base set (122 checks). A full run ends by printing the vectors it evaluated and a corpus digest over the set, so the evaluated set is checkable from the run's own output.
+
+## Run it, then post your score
+
+The conformance challenge is open on this repo: [Run the verifier. Post your score.](https://github.com/zambodotdev/aer-1/issues/4) Post your verifier, your score out of 146, and your environment. Scores are self-reported; any score is rerunnable byte for byte against the pinned set. The reference kit lives at https://github.com/zambodotdev/aer1-kit, and the hub runs the same challenge with a claim-your-row table: https://rambozambodotdev.gitlab.io/aer1-hub/aer1-conformance-challenge.html. Implementations and spec questions live in this repo's [discussions](https://github.com/zambodotdev/aer-1/discussions).
 
 ## Verify a receipt in 60 seconds
 
@@ -43,4 +54,4 @@ npm install aer-1
 The aer-1 package on npm creates and checks AER-1 receipts in Node: the same format the live Zambo endpoint issues on every call at https://zambo.dev/mcp.
 
 Add Zambo to your AI in one URL, no key, no account: https://zambo.dev/add/
-Free tier: every tool free once a day, plus 3 continue calls. One free wrap-up handover per day, and pickup is always free.. Need more? The $0.99 Day Pass makes it unlimited for 24 hours.
+Free tier: Every tool free once a day, plus 3 continue calls. One free wrap-up handover per day, and pickup is always free. Need more? The $0.99 Day Pass makes it unlimited for 24 hours.
