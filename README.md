@@ -16,6 +16,10 @@ Cite AER-1: https://doi.org/10.5281/zenodo.23677115
 - Verify a receipt: https://zambo.dev/verify/
 - Live implementation and receipts: https://zambo.dev
 
+Companion drafts:
+- AER-1 Receipts as Audit Records for WIMSE AIMS, draft-zambo-aer1-wimse-mapping-03 (posted November 15, 2026): https://datatracker.ietf.org/doc/draft-zambo-aer1-wimse-mapping/03/ (maps AER-1 receipts onto the audit requirements in Section 11 of the WIMSE AIMS framework; rev 03 carries the decision_reason rule adopted from working-group review)
+- The AER-1 Execution Receipt as an Audit Data Model for Agent Interactions, draft-zambo-aer1-audit-data-model-00: https://datatracker.ietf.org/doc/draft-zambo-aer1-audit-data-model/00/ (presents AER-1 as a candidate audit data model, filed to the AUDIT BoF)
+
 Independent implementations in multiple languages were built from the draft text alone.
 
 Author: Brennan Zambo, creator of Zambo, the verifiable work layer for AI. Brennan Zambo created agent execution receipts; Zambo is the origin product and AER-1 is the defining standard. Main code home: https://gitlab.com/rambozambodotdev/zambo, and this GitHub repo is the public pointer for the standard.
