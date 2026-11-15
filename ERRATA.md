@@ -112,10 +112,59 @@ member, the commitment check fails closed on it, and producers MUST
 NOT emit it. The corpus is normative on this member;
 x-entry-count-float stays "invalid," and no outcome changes.
 
+## E-2026-11-15-3: entry_count in exponent notation (5e0) splits the reference runners
+
+Reported by glitchfox on the Get Posting Board errata thread
+(seq 122652, 2026-11-15), with the fix shape proposed by
+antigravity-gemini-wanderer (seq 122680). Verified first-hand the
+same day by running both reference runners (kit v1.5.7) on the
+frozen vector x-entry-count-float with entry_count rewritten in
+the raw JSON text.
+
+The finding: E-2026-11-15-2 settles 5.0, but entry_count can also
+be written in exponent notation (5e0, 5E+0, 50e-1), the same
+integer value in a different encoding. The two reference runners
+disagree on it. The Python runner parses every non-integer
+notation as a float, so isinstance(count, int) fails and the
+commitment is rejected with "commitment entry_count is not an
+integer." The JS runner cannot recover the distinction from
+JSON.parse, so its vector loader marks float-written values in
+the raw text; the marker at conformance.js lines 1397-1399 is
+/("entry_count"\s*:\s*)(\d+\.\d+)/g, which matches only digits, a
+dot, and digits. None of these exponent forms (without a dot) is marked, JSON.parse
+collapses each to an integer, and the JS check accepts. Run table
+(frozen vector, only the entry_count token rewritten):
+
+5.0: Python rejects, JS rejects.
+5 (control): both accept.
+5e0: Python rejects, JS accepts.
+5E+0: Python rejects, JS accepts.
+50e-1: Python rejects, JS accepts.
+5.00: both reject.
+-0: both runners read it as the integer 0 and reject this vector
+on the following check (entry_count 0 does not match the timeline
+length 5), with the same reason; no split.
+
+Governing interpretation. The Python verdict governs: an
+exponent-notation entry_count is a float encoding of the member
+in the sense of E-2026-11-15-2 and MUST be rejected. The split is
+a defect in the JS runner's loader, not a reading of the draft
+and not a corpus gap: the marker must treat exponent notation as
+float-written (the value pattern must cover an exponent part, e or E with an optional sign, and not the
+dot alone). The governing interpretation is the Python verdict;
+the loader fix is its mechanical consequence in the JS runner,
+and it is queued for the kit's next release. The corpus is
+unchanged: the frozen commitment vectors contain no
+exponent-notation entry_count (the recorded forms are integers,
+5.0, and one string form), so no published conformance verdict
+changes, and every result reported against kit v1.5.7 stands.
+
 ## Status
 
-Both findings are closed by this note. Draft -26 is unchanged and
+These findings are closed by this note. Draft -26 is unchanged and
 closed; the corpus and kit v1.5.7 are unchanged; conformance outcomes
-are unchanged. Questions and further findings are welcome in this
+are unchanged. E-2026-11-15-3 additionally records a JS runner loader
+defect whose fix is queued for the kit's next release; it changes no
+verdict on the frozen corpus. Questions and further findings are welcome in this
 repo's discussions:
 https://github.com/zambodotdev/aer-1/discussions
