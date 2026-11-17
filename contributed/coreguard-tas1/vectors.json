@@ -1,0 +1,1587 @@
+{
+  "format": "cg-tas1-data-vectors/1",
+  "source": {
+    "repo": "https://github.com/coreguard-global/CoreGuard",
+    "commit": "b92d4d32835dd6f79e4c4ec0d1876c5f0787f243",
+    "test_file": "test/integrations/trust-anchor-set.test.mjs",
+    "module": "scripts/ladder/trust-anchor-set.mjs",
+    "module_dependency": "scripts/ladder/resolved-record-provenance.mjs"
+  },
+  "key_material": {
+    "note": "Deterministic Ed25519 keypairs derived in the source test from fixed seeds (PKCS8 prefix 302e020100300506032b657004220420 + seed). Seeds are public test material.",
+    "keys": [
+      {
+        "keyId": "tas-issuer-a",
+        "seed_hex": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "publicKeyHex": "e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58"
+      },
+      {
+        "keyId": "tas-issuer-b",
+        "seed_hex": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "publicKeyHex": "7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382"
+      },
+      {
+        "keyId": "tas-attacker",
+        "seed_hex": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "publicKeyHex": "ca57eed30e4a7274ef4c648f56f58f880b20d2ca25725d9e5c13c83c08c09aeb"
+      }
+    ]
+  },
+  "base_anchor_set_digest": "22819aa31be556a1b47bead352f6d638020784df800325934fc1188451d64664",
+  "vector_count": 49,
+  "vectors": [
+    {
+      "id": "tas1-01-gate-parity",
+      "test": "gate: honest record verifies through the caller-pinned set AND the direct CG-RRP/1 path (parity)",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000,
+          "anchorSetDigest": "22819aa31be556a1b47bead352f6d638020784df800325934fc1188451d64664"
+        }
+      },
+      "expected": {
+        "verdict": "VERIFIED",
+        "verdictCode": "PROVENANCE_VERIFIED",
+        "directVerdictCode": "PROVENANCE_VERIFIED"
+      }
+    },
+    {
+      "id": "tas1-02-unknown-keyid",
+      "test": "record self-selecting a key absent from the pinned set fails closed (UNKNOWN_KEY_ID)",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "ghost-key"
+          },
+          "signature": "1d252ce238ab470e5157e126a6f8185f1b6c4dca398692dc831ec800b413f757d77875f28196e406aa21903e0721a592b18251bcf4eac64210f994f03ace2f0a"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000,
+          "anchorSetDigest": "22819aa31be556a1b47bead352f6d638020784df800325934fc1188451d64664"
+        }
+      },
+      "expected": {
+        "verdict": "INVALID",
+        "verdictCode": "PROVENANCE_UNTRUSTED_ISSUER",
+        "setReason": "UNKNOWN_KEY_ID"
+      }
+    },
+    {
+      "id": "tas1-03-duplicate-identical",
+      "test": "duplicate keyId (byte-identical duplicates) is an ambiguous distribution -> CONFLICT, never first-match",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"},{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000
+        }
+      },
+      "expected": {
+        "verdict": "INVALID",
+        "verdictCode": "PROVENANCE_CONFLICT",
+        "setReason": "DUPLICATE_KEY_ID"
+      }
+    },
+    {
+      "id": "tas1-04-duplicate-different",
+      "test": "duplicate keyId carried by two DIFFERENT keys is equally a CONFLICT",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-a\",\"publicKeyHex\":\"ca57eed30e4a7274ef4c648f56f58f880b20d2ca25725d9e5c13c83c08c09aeb\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000
+        }
+      },
+      "expected": {
+        "verdictCode": "PROVENANCE_CONFLICT",
+        "setReason": "DUPLICATE_KEY_ID"
+      }
+    },
+    {
+      "id": "tas1-05-revoked-valid-sig",
+      "test": "revocation dominates: a revoked key with a VALID signature still fails closed",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\",\"revoked\":true,\"revokedAt\":1600000000}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000
+        }
+      },
+      "expected": {
+        "verdict": "INVALID",
+        "verdictCode": "PROVENANCE_UNTRUSTED_ISSUER",
+        "setReason": "ANCHOR_REVOKED"
+      }
+    },
+    {
+      "id": "tas1-06-revokedat-informational-a",
+      "test": "revokedAt is informational: changing it never changes the revocation verdict",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\",\"revoked\":true,\"revokedAt\":1600000000}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000
+        }
+      },
+      "expected": {
+        "verdict": "INVALID",
+        "verdictCode": "PROVENANCE_UNTRUSTED_ISSUER",
+        "setReason": "ANCHOR_REVOKED"
+      }
+    },
+    {
+      "id": "tas1-06-revokedat-informational-b",
+      "test": "revokedAt is informational: changing it never changes the revocation verdict",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\",\"revoked\":true,\"revokedAt\":1999999999}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000
+        }
+      },
+      "expected": {
+        "verdict": "INVALID",
+        "verdictCode": "PROVENANCE_UNTRUSTED_ISSUER",
+        "setReason": "ANCHOR_REVOKED"
+      }
+    },
+    {
+      "id": "tas1-07-not-yet-valid",
+      "test": "key not yet valid (notBefore in the future, injected decision time) fails closed",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1750001000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000
+        }
+      },
+      "expected": {
+        "verdictCode": "PROVENANCE_NOT_YET_VALID",
+        "setReason": "ANCHOR_NOT_YET_VALID"
+      }
+    },
+    {
+      "id": "tas1-08-expired",
+      "test": "expired key (notAfter in the past, injected decision time) fails closed",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":1749999000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000
+        }
+      },
+      "expected": {
+        "verdictCode": "PROVENANCE_EXPIRED",
+        "setReason": "ANCHOR_EXPIRED"
+      }
+    },
+    {
+      "id": "tas1-09a-bound-at-start",
+      "test": "window bounds are inclusive at both edges (notBefore and notAfter admit equality)",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":1760000000,\"notBefore\":1750000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000
+        }
+      },
+      "expected": {
+        "verdictCode": "PROVENANCE_VERIFIED"
+      }
+    },
+    {
+      "id": "tas1-09b-bound-at-end",
+      "test": "window bounds are inclusive at both edges (notBefore and notAfter admit equality)",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":1760000000,\"notBefore\":1750000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1760000000
+        }
+      },
+      "expected": {
+        "verdictCode": "PROVENANCE_VERIFIED"
+      }
+    },
+    {
+      "id": "tas1-09c-bound-before",
+      "test": "window bounds are inclusive at both edges (notBefore and notAfter admit equality)",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":1760000000,\"notBefore\":1750000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1749999999
+        }
+      },
+      "expected": {
+        "setReason": "ANCHOR_NOT_YET_VALID"
+      }
+    },
+    {
+      "id": "tas1-09d-bound-after",
+      "test": "window bounds are inclusive at both edges (notBefore and notAfter admit equality)",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":1760000000,\"notBefore\":1750000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1760000001
+        }
+      },
+      "expected": {
+        "setReason": "ANCHOR_EXPIRED"
+      }
+    },
+    {
+      "id": "tas1-10a-rotation-a",
+      "test": "rotation overlap resolves per record: both era keys work, each through its own declaration",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1850000000
+        }
+      },
+      "expected": {
+        "verdictCode": "PROVENANCE_VERIFIED"
+      }
+    },
+    {
+      "id": "tas1-10b-rotation-b",
+      "test": "rotation overlap resolves per record: both era keys work, each through its own declaration",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-2",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-b"
+          },
+          "signature": "872539785e53e91a1e53738ef1779ee6c4e4a323998f8dbafec295d5784b3b75a67ca11079e546790981be2ace45707de3433e7363d3a4fb5a82f8cbfa9ab505"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1850000000
+        }
+      },
+      "expected": {
+        "verdictCode": "PROVENANCE_VERIFIED"
+      }
+    },
+    {
+      "id": "tas1-10c-rotation-b-early",
+      "test": "rotation overlap resolves per record: both era keys work, each through its own declaration",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-2",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-b"
+          },
+          "signature": "872539785e53e91a1e53738ef1779ee6c4e4a323998f8dbafec295d5784b3b75a67ca11079e546790981be2ace45707de3433e7363d3a4fb5a82f8cbfa9ab505"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1700000000
+        }
+      },
+      "expected": {
+        "setReason": "ANCHOR_NOT_YET_VALID"
+      }
+    },
+    {
+      "id": "tas1-11a-digest-honest",
+      "test": "digest pin: the honest set verifies under its pin; a tampered set behind the ORIGINAL pin is a conflict",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000,
+          "anchorSetDigest": "22819aa31be556a1b47bead352f6d638020784df800325934fc1188451d64664"
+        }
+      },
+      "expected": {
+        "verdictCode": "PROVENANCE_VERIFIED"
+      }
+    },
+    {
+      "id": "tas1-11b-digest-tampered",
+      "test": "digest pin: the honest set verifies under its pin; a tampered set behind the ORIGINAL pin is a conflict",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"ca57eed30e4a7274ef4c648f56f58f880b20d2ca25725d9e5c13c83c08c09aeb\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000,
+          "anchorSetDigest": "22819aa31be556a1b47bead352f6d638020784df800325934fc1188451d64664"
+        }
+      },
+      "expected": {
+        "verdict": "INVALID",
+        "verdictCode": "PROVENANCE_CONFLICT",
+        "setReason": "DIGEST_MISMATCH"
+      }
+    },
+    {
+      "id": "tas1-12a-digest-canonical",
+      "test": "digest is defined over canonical bytes: pretty-printed transport text does not move the pin",
+      "mode": "digest",
+      "inputs": {
+        "anchorSet": {
+          "spec": "CG-TAS/1",
+          "anchorSetId": "tas-set-1",
+          "keys": [
+            {
+              "keyId": "tas-issuer-a",
+              "publicKeyHex": "e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58",
+              "notBefore": 1600000000,
+              "notAfter": 2000000000
+            },
+            {
+              "keyId": "tas-issuer-b",
+              "publicKeyHex": "7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382",
+              "notBefore": 1800000000
+            }
+          ],
+          "generatedAt": 1690000000,
+          "annotations": {
+            "owner": "coreguard"
+          }
+        }
+      },
+      "expected": {
+        "digest": "22819aa31be556a1b47bead352f6d638020784df800325934fc1188451d64664"
+      }
+    },
+    {
+      "id": "tas1-12b-pretty-transport",
+      "test": "digest is defined over canonical bytes: pretty-printed transport text does not move the pin",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\n  \"spec\": \"CG-TAS/1\",\n  \"anchorSetId\": \"tas-set-1\",\n  \"keys\": [\n    {\n      \"keyId\": \"tas-issuer-a\",\n      \"publicKeyHex\": \"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\",\n      \"notBefore\": 1600000000,\n      \"notAfter\": 2000000000\n    },\n    {\n      \"keyId\": \"tas-issuer-b\",\n      \"publicKeyHex\": \"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\",\n      \"notBefore\": 1800000000\n    }\n  ],\n  \"generatedAt\": 1690000000,\n  \"annotations\": {\n    \"owner\": \"coreguard\"\n  }\n}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000,
+          "anchorSetDigest": "22819aa31be556a1b47bead352f6d638020784df800325934fc1188451d64664"
+        }
+      },
+      "expected": {
+        "verdictCode": "PROVENANCE_VERIFIED"
+      }
+    },
+    {
+      "id": "tas1-13a-unknown-top-field",
+      "test": "strict shape: unknown top-level and unknown key fields are conflicts, never ignored",
+      "mode": "validate",
+      "inputs": {
+        "anchorSet": {
+          "spec": "CG-TAS/1",
+          "anchorSetId": "tas-set-1",
+          "keys": [
+            {
+              "keyId": "tas-issuer-a",
+              "publicKeyHex": "e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58",
+              "notBefore": 1600000000,
+              "notAfter": 2000000000
+            },
+            {
+              "keyId": "tas-issuer-b",
+              "publicKeyHex": "7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382",
+              "notBefore": 1800000000
+            }
+          ],
+          "generatedAt": 1690000000,
+          "annotations": {
+            "owner": "coreguard"
+          },
+          "backdoor": "attacker"
+        }
+      },
+      "expected": {
+        "code": "UNKNOWN_SET_FIELD"
+      }
+    },
+    {
+      "id": "tas1-13b-unknown-key-field",
+      "test": "strict shape: unknown top-level and unknown key fields are conflicts, never ignored",
+      "mode": "validate",
+      "inputs": {
+        "anchorSet": {
+          "spec": "CG-TAS/1",
+          "anchorSetId": "tas-set-1",
+          "keys": [
+            {
+              "keyId": "tas-issuer-a",
+              "publicKeyHex": "e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58",
+              "notBefore": 1600000000,
+              "notAfter": 2000000000,
+              "trustMe": true
+            }
+          ],
+          "generatedAt": 1690000000,
+          "annotations": {
+            "owner": "coreguard"
+          }
+        }
+      },
+      "expected": {
+        "code": "UNKNOWN_KEY_FIELD"
+      }
+    },
+    {
+      "id": "tas1-13c-unknown-top-via-wrapper",
+      "test": "strict shape: unknown top-level and unknown key fields are conflicts, never ignored",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"backdoor\":\"attacker\",\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000
+        }
+      },
+      "expected": {
+        "verdictCode": "PROVENANCE_CONFLICT"
+      }
+    },
+    {
+      "id": "tas1-14a-uppercase-hex",
+      "test": "strict shape: type confusion fails closed (uppercase hex, string windows, malformed revocation)",
+      "mode": "validate",
+      "inputs": {
+        "anchorSet": {
+          "spec": "CG-TAS/1",
+          "anchorSetId": "tas-set-1",
+          "keys": [
+            {
+              "keyId": "tas-issuer-a",
+              "publicKeyHex": "CA57EED30E4A7274EF4C648F56F58F880B20D2CA25725D9E5C13C83C08C09AEB",
+              "notBefore": 1600000000,
+              "notAfter": 2000000000
+            }
+          ],
+          "generatedAt": 1690000000,
+          "annotations": {
+            "owner": "coreguard"
+          }
+        }
+      },
+      "expected": {
+        "code": "BAD_PUBLIC_KEY_HEX"
+      }
+    },
+    {
+      "id": "tas1-14b-string-window",
+      "test": "strict shape: type confusion fails closed (uppercase hex, string windows, malformed revocation)",
+      "mode": "validate",
+      "inputs": {
+        "anchorSet": {
+          "spec": "CG-TAS/1",
+          "anchorSetId": "tas-set-1",
+          "keys": [
+            {
+              "keyId": "tas-issuer-a",
+              "publicKeyHex": "e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58",
+              "notBefore": "1600000000",
+              "notAfter": 2000000000
+            }
+          ],
+          "generatedAt": 1690000000,
+          "annotations": {
+            "owner": "coreguard"
+          }
+        }
+      },
+      "expected": {
+        "code": "BAD_WINDOW"
+      }
+    },
+    {
+      "id": "tas1-14c-revoked-no-at",
+      "test": "strict shape: type confusion fails closed (uppercase hex, string windows, malformed revocation)",
+      "mode": "validate",
+      "inputs": {
+        "anchorSet": {
+          "spec": "CG-TAS/1",
+          "anchorSetId": "tas-set-1",
+          "keys": [
+            {
+              "keyId": "tas-issuer-a",
+              "publicKeyHex": "e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58",
+              "notBefore": 1600000000,
+              "notAfter": 2000000000,
+              "revoked": true
+            }
+          ],
+          "generatedAt": 1690000000,
+          "annotations": {
+            "owner": "coreguard"
+          }
+        }
+      },
+      "expected": {
+        "code": "BAD_REVOCATION"
+      }
+    },
+    {
+      "id": "tas1-14d-stray-revokedat",
+      "test": "strict shape: type confusion fails closed (uppercase hex, string windows, malformed revocation)",
+      "mode": "validate",
+      "inputs": {
+        "anchorSet": {
+          "spec": "CG-TAS/1",
+          "anchorSetId": "tas-set-1",
+          "keys": [
+            {
+              "keyId": "tas-issuer-a",
+              "publicKeyHex": "e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58",
+              "notBefore": 1600000000,
+              "notAfter": 2000000000,
+              "revokedAt": 1600000000
+            }
+          ],
+          "generatedAt": 1690000000,
+          "annotations": {
+            "owner": "coreguard"
+          }
+        }
+      },
+      "expected": {
+        "code": "BAD_REVOCATION"
+      }
+    },
+    {
+      "id": "tas1-14e-inverted-window",
+      "test": "strict shape: type confusion fails closed (uppercase hex, string windows, malformed revocation)",
+      "mode": "validate",
+      "inputs": {
+        "anchorSet": {
+          "spec": "CG-TAS/1",
+          "anchorSetId": "tas-set-1",
+          "keys": [
+            {
+              "keyId": "tas-issuer-a",
+              "publicKeyHex": "e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58",
+              "notBefore": 2000000000,
+              "notAfter": 1600000000
+            }
+          ],
+          "generatedAt": 1690000000,
+          "annotations": {
+            "owner": "coreguard"
+          }
+        }
+      },
+      "expected": {
+        "code": "BAD_WINDOW"
+      }
+    },
+    {
+      "id": "tas1-15a-missing-decision-time",
+      "test": "the set path always requires a caller-injected decision time (no wall clock, ever)",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {}
+      },
+      "expected": {
+        "verdict": "INVALID",
+        "verdictCode": "PROVENANCE_MALFORMED",
+        "setReason": "MISSING_DECISION_TIME"
+      }
+    },
+    {
+      "id": "tas1-15b-string-decision-time",
+      "test": "the set path always requires a caller-injected decision time (no wall clock, ever)",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": "1750000000"
+        }
+      },
+      "expected": {
+        "verdictCode": "PROVENANCE_MALFORMED"
+      }
+    },
+    {
+      "id": "tas1-16a-nondecesional-base",
+      "test": "non-decisional fields: annotations and generatedAt never move a verdict (no pin)",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000
+        }
+      },
+      "expected": {
+        "verdictCode": "PROVENANCE_VERIFIED"
+      }
+    },
+    {
+      "id": "tas1-16b-nondecesional-annotated",
+      "test": "non-decisional fields: annotations and generatedAt never move a verdict (no pin)",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"extra\":\"noise\",\"owner\":\"coreguard\"},\"generatedAt\":1690000001,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000
+        }
+      },
+      "expected": {
+        "verdictCode": "PROVENANCE_VERIFIED"
+      }
+    },
+    {
+      "id": "tas1-17-caller-ambiguity",
+      "test": "caller ambiguity: pinning both an anchor set and a single trust anchor fails closed",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000,
+          "anchorSetDigest": "22819aa31be556a1b47bead352f6d638020784df800325934fc1188451d64664",
+          "trustAnchor": {
+            "keyId": "tas-issuer-a",
+            "publicKeyHex": "e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58"
+          }
+        }
+      },
+      "expected": {
+        "verdictCode": "PROVENANCE_CONFLICT",
+        "setReason": "CALLER_AMBIGUOUS_INPUT"
+      }
+    },
+    {
+      "id": "tas1-18-self-carried-set",
+      "test": "the record may not carry its own trust material: extra envelope fields are malformed (CG-RRP/1 unchanged)",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e",
+          "anchorSet": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000,
+          "anchorSetDigest": "22819aa31be556a1b47bead352f6d638020784df800325934fc1188451d64664"
+        }
+      },
+      "expected": {
+        "verdict": "INVALID",
+        "verdictCode": "PROVENANCE_MALFORMED"
+      }
+    },
+    {
+      "id": "tas1-19-determinism",
+      "test": "determinism: identical inputs produce byte-identical results across repeated runs",
+      "mode": "determinism",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a",
+            "issuedAt": 1700000000,
+            "expiresAt": 1900000000
+          },
+          "signature": "db16a8347bbc05ef9cbbe5fb2f57178efb6133ea61699e92fdb21ab99e05236a0047ccecc93a1120500d4a3e65b1751a3112106b127fcae67ccfc9255466510e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000,
+          "anchorSetDigest": "22819aa31be556a1b47bead352f6d638020784df800325934fc1188451d64664"
+        }
+      },
+      "expected": {
+        "allIdentical": true,
+        "repetitions": 11
+      }
+    },
+    {
+      "id": "tas1-20a-sweep-unknown-keyid",
+      "test": "non-permissiveness sweep: no attack vector in the battery ever reaches VERIFIED",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "ghost"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000,
+          "anchorSetDigest": "22819aa31be556a1b47bead352f6d638020784df800325934fc1188451d64664"
+        }
+      },
+      "expected": {
+        "verdictCodeNot": "PROVENANCE_VERIFIED",
+        "verdictCodeInEnum": true
+      }
+    },
+    {
+      "id": "tas1-20b-sweep-duplicate",
+      "test": "non-permissiveness sweep: no attack vector in the battery ever reaches VERIFIED",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"},{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000
+        }
+      },
+      "expected": {
+        "verdictCodeNot": "PROVENANCE_VERIFIED",
+        "verdictCodeInEnum": true
+      }
+    },
+    {
+      "id": "tas1-20c-sweep-revoked",
+      "test": "non-permissiveness sweep: no attack vector in the battery ever reaches VERIFIED",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\",\"revoked\":true,\"revokedAt\":1600000000}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000
+        }
+      },
+      "expected": {
+        "verdictCodeNot": "PROVENANCE_VERIFIED",
+        "verdictCodeInEnum": true
+      }
+    },
+    {
+      "id": "tas1-20d-sweep-expired",
+      "test": "non-permissiveness sweep: no attack vector in the battery ever reaches VERIFIED",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":1749999999,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000
+        }
+      },
+      "expected": {
+        "verdictCodeNot": "PROVENANCE_VERIFIED",
+        "verdictCodeInEnum": true
+      }
+    },
+    {
+      "id": "tas1-20e-sweep-attacker-not-in-set",
+      "test": "non-permissiveness sweep: no attack vector in the battery ever reaches VERIFIED",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-attacker"
+          },
+          "signature": "4018ee0b16efd76897987f4a7156df2148687f98a88c241b6a9d709edc31250b14ffa9ae3a55cd43910badbcac40ecae17ae32ad052cbb863305c07324db040c"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000,
+          "anchorSetDigest": "22819aa31be556a1b47bead352f6d638020784df800325934fc1188451d64664"
+        }
+      },
+      "expected": {
+        "verdictCodeNot": "PROVENANCE_VERIFIED",
+        "verdictCodeInEnum": true
+      }
+    },
+    {
+      "id": "tas1-20f-sweep-digest-mismatch",
+      "test": "non-permissiveness sweep: no attack vector in the battery ever reaches VERIFIED",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"ca57eed30e4a7274ef4c648f56f58f880b20d2ca25725d9e5c13c83c08c09aeb\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000,
+          "anchorSetDigest": "22819aa31be556a1b47bead352f6d638020784df800325934fc1188451d64664"
+        }
+      },
+      "expected": {
+        "verdictCodeNot": "PROVENANCE_VERIFIED",
+        "verdictCodeInEnum": true
+      }
+    },
+    {
+      "id": "tas1-20g-sweep-corrupt-signature",
+      "test": "non-permissiveness sweep: no attack vector in the battery ever reaches VERIFIED",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000,
+          "anchorSetDigest": "22819aa31be556a1b47bead352f6d638020784df800325934fc1188451d64664"
+        }
+      },
+      "expected": {
+        "verdictCodeNot": "PROVENANCE_VERIFIED",
+        "verdictCodeInEnum": true
+      }
+    },
+    {
+      "id": "tas1-20h-sweep-context-mismatch",
+      "test": "non-permissiveness sweep: no attack vector in the battery ever reaches VERIFIED",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "testnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000,
+          "anchorSetDigest": "22819aa31be556a1b47bead352f6d638020784df800325934fc1188451d64664"
+        }
+      },
+      "expected": {
+        "verdictCodeNot": "PROVENANCE_VERIFIED",
+        "verdictCodeInEnum": true
+      }
+    },
+    {
+      "id": "tas1-20i-sweep-missing-time",
+      "test": "non-permissiveness sweep: no attack vector in the battery ever reaches VERIFIED",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{\"anchorSetId\":\"tas-set-1\",\"annotations\":{\"owner\":\"coreguard\"},\"generatedAt\":1690000000,\"keys\":[{\"keyId\":\"tas-issuer-a\",\"notAfter\":2000000000,\"notBefore\":1600000000,\"publicKeyHex\":\"e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58\"},{\"keyId\":\"tas-issuer-b\",\"notBefore\":1800000000,\"publicKeyHex\":\"7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382\"}],\"spec\":\"CG-TAS/1\"}",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {}
+      },
+      "expected": {
+        "verdictCodeNot": "PROVENANCE_VERIFIED",
+        "verdictCodeInEnum": true
+      }
+    },
+    {
+      "id": "tas1-20j-sweep-nonjson-set",
+      "test": "non-permissiveness sweep: no attack vector in the battery ever reaches VERIFIED",
+      "mode": "verify",
+      "inputs": {
+        "record": {
+          "payload": {
+            "v": "CG-RRP/1",
+            "recordId": "rec-tas-1",
+            "artifactDigest": "sha256:tas-artifact",
+            "context": {
+              "network": "mainnet",
+              "chainId": "1116"
+            },
+            "issuerKeyId": "tas-issuer-a"
+          },
+          "signature": "da278711655c9c51304a9678e03dad2ffba3527669513367c8877759f11204661ab6c43b5505bb481d9ef77fb7564a850e8d11f2ad7b843f00254cc4352f9f0e"
+        },
+        "anchorSetText": "{not json",
+        "context": {
+          "network": "mainnet",
+          "chainId": "1116"
+        },
+        "options": {
+          "nowSeconds": 1750000000
+        }
+      },
+      "expected": {
+        "verdictCodeNot": "PROVENANCE_VERIFIED",
+        "verdictCodeInEnum": true
+      }
+    },
+    {
+      "id": "tas1-21a-resolve-exact",
+      "test": "resolveAnchorKey unit: exact match inside a validated set, inclusive bounds, deterministic",
+      "mode": "resolve",
+      "inputs": {
+        "anchorSet": {
+          "spec": "CG-TAS/1",
+          "anchorSetId": "tas-set-1",
+          "keys": [
+            {
+              "keyId": "tas-issuer-a",
+              "publicKeyHex": "e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58",
+              "notBefore": 1600000000,
+              "notAfter": 2000000000
+            },
+            {
+              "keyId": "tas-issuer-b",
+              "publicKeyHex": "7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382",
+              "notBefore": 1800000000
+            }
+          ],
+          "generatedAt": 1690000000,
+          "annotations": {
+            "owner": "coreguard"
+          }
+        },
+        "keyId": "tas-issuer-a",
+        "nowSeconds": 1750000000
+      },
+      "expected": {
+        "ok": true,
+        "key": {
+          "keyId": "tas-issuer-a",
+          "publicKeyHex": "e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58"
+        }
+      }
+    },
+    {
+      "id": "tas1-21b-resolve-rotated-inclusive",
+      "test": "resolveAnchorKey unit: exact match inside a validated set, inclusive bounds, deterministic",
+      "mode": "resolve",
+      "inputs": {
+        "anchorSet": {
+          "spec": "CG-TAS/1",
+          "anchorSetId": "tas-set-1",
+          "keys": [
+            {
+              "keyId": "tas-issuer-a",
+              "publicKeyHex": "e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58",
+              "notBefore": 1600000000,
+              "notAfter": 2000000000
+            },
+            {
+              "keyId": "tas-issuer-b",
+              "publicKeyHex": "7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382",
+              "notBefore": 1800000000
+            }
+          ],
+          "generatedAt": 1690000000,
+          "annotations": {
+            "owner": "coreguard"
+          }
+        },
+        "keyId": "tas-issuer-b",
+        "nowSeconds": 1800000000
+      },
+      "expected": {
+        "ok": true
+      }
+    },
+    {
+      "id": "tas1-21c-resolve-rotated-early",
+      "test": "resolveAnchorKey unit: exact match inside a validated set, inclusive bounds, deterministic",
+      "mode": "resolve",
+      "inputs": {
+        "anchorSet": {
+          "spec": "CG-TAS/1",
+          "anchorSetId": "tas-set-1",
+          "keys": [
+            {
+              "keyId": "tas-issuer-a",
+              "publicKeyHex": "e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58",
+              "notBefore": 1600000000,
+              "notAfter": 2000000000
+            },
+            {
+              "keyId": "tas-issuer-b",
+              "publicKeyHex": "7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382",
+              "notBefore": 1800000000
+            }
+          ],
+          "generatedAt": 1690000000,
+          "annotations": {
+            "owner": "coreguard"
+          }
+        },
+        "keyId": "tas-issuer-b",
+        "nowSeconds": 1799999999
+      },
+      "expected": {
+        "code": "ANCHOR_NOT_YET_VALID"
+      }
+    },
+    {
+      "id": "tas1-21d-resolve-unknown",
+      "test": "resolveAnchorKey unit: exact match inside a validated set, inclusive bounds, deterministic",
+      "mode": "resolve",
+      "inputs": {
+        "anchorSet": {
+          "spec": "CG-TAS/1",
+          "anchorSetId": "tas-set-1",
+          "keys": [
+            {
+              "keyId": "tas-issuer-a",
+              "publicKeyHex": "e734ea6c2b6257de72355e472aa05a4c487e6b463c029ed306df2f01b5636b58",
+              "notBefore": 1600000000,
+              "notAfter": 2000000000
+            },
+            {
+              "keyId": "tas-issuer-b",
+              "publicKeyHex": "7d59c5623dd40a74aa4d5a32ac645d3b3f95daeae4c22be25476dd6a486f7382",
+              "notBefore": 1800000000
+            }
+          ],
+          "generatedAt": 1690000000,
+          "annotations": {
+            "owner": "coreguard"
+          }
+        },
+        "keyId": "nope",
+        "nowSeconds": 1750000000
+      },
+      "expected": {
+        "code": "UNKNOWN_KEY_ID"
+      }
+    }
+  ]
+}
