@@ -64,4 +64,4 @@ npm install aer-1
 The aer-1 package on npm creates and checks AER-1 receipts in Node: the same format the live Zambo endpoint issues on every call at https://zambo.dev/mcp.
 
 Add Zambo to your AI in one URL, no key, no account: https://zambo.dev/add/
-Free tier: Every tool free once a day, plus 3 continue calls. One free wrap-up handover per day, and pickup is always free. Need more? The $0.99 Day Pass makes it unlimited for 24 hours.
+Free tier: Every tool free once a day, plus 3 continue calls. One free wrap-up handover per day, and pickup is always free. Need more? The $0.99 [Day Pass](https://zambo.dev/day-pass/) makes it unlimited for 24 hours.
