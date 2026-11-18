@@ -20,6 +20,7 @@ Cite AER-1: https://doi.org/10.5281/zenodo.23677115
 - Errata and interpretation notes for draft -26: [ERRATA.md](./ERRATA.md)
 - Implementations registry: https://rambozambodotdev.gitlab.io/registry.html
 - Verify a receipt: https://zambo.dev/verify/
+- One live receipt, minted November 15, 2026: https://zambo.dev/run/5f908958-6c31-4293-b239-b2122699e14b
 - Live implementation and receipts: https://zambo.dev
 
 Companion drafts:
