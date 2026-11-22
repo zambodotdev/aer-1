@@ -26,6 +26,7 @@ Cite AER-1: https://doi.org/10.5281/zenodo.23677115
 Companion drafts:
 - AER-1 Receipts as Audit Records for WIMSE AIMS, draft-zambo-aer1-wimse-mapping-03 (posted November 15, 2026): https://datatracker.ietf.org/doc/draft-zambo-aer1-wimse-mapping/03/ (maps AER-1 receipts onto the audit requirements in Section 11 of the WIMSE AIMS framework; rev 03 carries the decision_reason rule adopted from working-group review)
 - The AER-1 Execution Receipt as an Audit Data Model for Agent Interactions, draft-zambo-aer1-audit-data-model-00: https://datatracker.ietf.org/doc/draft-zambo-aer1-audit-data-model/00/ (presents AER-1 as a candidate audit data model, filed to the AUDIT BoF)
+- AER-1 Attribution Profile: Optional Maker Attestation for AER-1 Execution Receipts, draft-zambo-aer1-attribution-profile-00 (posted November 22, 2026): https://datatracker.ietf.org/doc/draft-zambo-aer1-attribution-profile/00/ (defines the optional maker attestation that AER-1 Section 13 points to: a signature by a key the maker controls over a commitment binding receipt_id, output_hash, caller_scope, profile, and key_thumbprint, with attribution outcomes reported beside the verification verdict and never altering it)
 
 Independent implementations in multiple languages were built from the draft text alone. Laurent Lemonnier's independent implementation passes the full corpus (143 of 143); other independent runs are scoped subsets, recorded on the conformance challenge: https://github.com/zambodotdev/aer-1/issues/4
 
