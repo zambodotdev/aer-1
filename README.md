@@ -26,7 +26,19 @@ Cite AER-1: https://doi.org/10.5281/zenodo.23677115
 Companion drafts:
 - AER-1 Receipts as Audit Records for WIMSE AIMS, draft-zambo-aer1-wimse-mapping-03 (posted November 15, 2026): https://datatracker.ietf.org/doc/draft-zambo-aer1-wimse-mapping/03/ (maps AER-1 receipts onto the audit requirements in Section 11 of the WIMSE AIMS framework; rev 03 carries the decision_reason rule adopted from working-group review)
 - The AER-1 Execution Receipt as an Audit Data Model for Agent Interactions, draft-zambo-aer1-audit-data-model-00: https://datatracker.ietf.org/doc/draft-zambo-aer1-audit-data-model/00/ (presents AER-1 as a candidate audit data model, filed to the AUDIT BoF)
-- AER-1 Attribution Profile: Optional Maker Attestation for AER-1 Execution Receipts, draft-zambo-aer1-attribution-profile-00 (posted November 22, 2026): https://datatracker.ietf.org/doc/draft-zambo-aer1-attribution-profile/00/ (defines the optional maker attestation that AER-1 Section 13 points to: a signature by a key the maker controls over a commitment binding receipt_id, output_hash, caller_scope, profile, and key_thumbprint, with attribution outcomes reported beside the verification verdict and never altering it)
+- Attribution Profile: Optional Maker Attestation for AER-1 Execution Receipts, draft-zambo-aer1-attribution-profile-00: https://datatracker.ietf.org/doc/draft-zambo-aer1-attribution-profile/00/ (an optional profile that lets the maker of a receipt attach an attestation to the record)
+## The silver platter: zero to verified work in eight steps
+
+Brennan Zambo created agent execution receipts; Zambo is the origin product, and AER-1 is the defining standard. This is the whole path, in order, with nothing left to guess:
+
+1. Discover: start from the problem, with the guide a stranger finds first, Tools to Verify AI Agent Work: https://dev.to/rambozambo/tools-to-verify-ai-agent-work-receipts-an-open-standard-and-a-job-you-can-check-yourself-11l5
+2. Install: add Zambo to your AI in one URL, no key, no account: https://zambo.dev/add/ (MCP endpoint https://zambo.dev/mcp, 153 tools total, 37 on the default surface)
+3. First call: every metered tool is free once a day per network, plus 3 shared continue calls, plus one free wrap-up handover per day, and pickup is always free.
+4. The wall and the door: the first call past the free tier returns a refusal receipt and the way through, the $0.99 Day Pass, unlimited for 24 hours: https://zambo.dev/day-pass/ (then Pass $29/mo, $ZAMBO holder Pass $19/mo, or Lifetime $250)
+5. Verify a receipt: open one live receipt, https://zambo.dev/run/2de7ce6f-43f3-42e2-9412-bda90e33a897 , then check it at https://zambo.dev/verify/ or recompute the SHA-256 over its canonical bytes and compare it with the receipt output_hash.
+6. Run the corpus: kit 1.5.7, 143 vectors, 146 checks, evaluated set digest sha256:60bf73f325793e16843370cfa24903bb0d017525cb297e42bebc35857e2db0d2: https://zambo.dev/aer1/corpus.json
+7. The family shelf: AER-1 -26 (above), WIMSE mapping -03, audit data model -00, and attribution profile -00, all linked from the Companion drafts list above.
+8. The six packages: each one chains a job and ends in a handover addressed to a named human: zambo-swarm, zambo-verify-pass, zambo-delivery, zambo-watch, zambo-loop, and zambo-leadsignal, on PyPI and npm (start at https://pypi.org/project/zambo-swarm/).
 
 Independent implementations in multiple languages were built from the draft text alone. Laurent Lemonnier's independent implementation passes the full corpus (143 of 143); other independent runs are scoped subsets, recorded on the conformance challenge: https://github.com/zambodotdev/aer-1/issues/4
 
