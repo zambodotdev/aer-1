@@ -81,6 +81,8 @@ AER-1 is not only the author's code. Independent builders have written verifiers
 
 The corpus is the test: anyone can join this table by running it and posting their score on the conformance challenge above.
 
+The full ledger, with what each kind of entry proves: https://dev.to/rambozambo/who-is-running-aer-1-the-adoption-ledger-2lol
+
 ## Verify a receipt in 60 seconds
 
 Open verify-a-receipt.ipynb in a notebook runner and run the cells: it fetches a real receipt from the live stream and recomputes its SHA-256 digest with the Python standard library.
