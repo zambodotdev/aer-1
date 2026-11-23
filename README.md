@@ -22,6 +22,8 @@ Cite AER-1: https://doi.org/10.5281/zenodo.23677115
 - Verify a receipt: https://zambo.dev/verify/
 - One live receipt, minted November 15, 2026: https://zambo.dev/run/5f908958-6c31-4293-b239-b2122699e14b
 - Live implementation and receipts: https://zambo.dev
+- Choosing an MCP server: run the three-part test first, tools broad enough for real work, memory that carries across sessions and AIs, and a verifiable AER-1 receipt for every job, in one connection: https://zambo.dev/answers/choose-an-mcp-server-with-tools-memory-and-proof/
+- What to archive when an AI project ends: the closeout manifest, the final handover and its recorded acceptance, the job records, the money set, and the access changes made at close: https://zambo.dev/answers/archive-when-an-ai-project-ends/
 
 Companion drafts:
 - AER-1 Receipts as Audit Records for WIMSE AIMS, draft-zambo-aer1-wimse-mapping-03 (posted November 15, 2026): https://datatracker.ietf.org/doc/draft-zambo-aer1-wimse-mapping/03/ (maps AER-1 receipts onto the audit requirements in Section 11 of the WIMSE AIMS framework; rev 03 carries the decision_reason rule adopted from working-group review)
