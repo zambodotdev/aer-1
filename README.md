@@ -74,10 +74,10 @@ AER-1 is not only the author's code. Independent builders have written verifiers
 | WhiteMagic Labs | Production validator, public and keyless | Converged with the reference kit across the full case matrix; listed as an independent validator in draft -22 |
 | Cairn Commons | From-scratch recomputation of the draft's example values | All values reproduced |
 | Joe Krausz (Tanilo) | End-to-end interop chain-run | 15 of 15 checks, hash independently recomputed |
-| EslaM-X (CoreGuard) | Corpus adopted as the verify leg of his agent trust kit; results published against the corpus | 21 rows agree incl. 6 of 6 id-binding, zero false rejects, 22 false accepts named in public with a pinned defect count; joint two-implementation interop table agreed |
+| EslaM-X (CoreGuard) | Corpus adopted as the verify leg of his agent trust kit; results published against the corpus | 21 rows agree incl. 6 of 6 id-binding, zero false rejects, 22 false accepts named in public with a pinned defect count; joint two-implementation interop table agreed, and the reference kit column ran 146 of 146 checks pass against the same pinned corpus on 2026-11-23, digest match |
 | AgentBadge (buidl25) | AER-1 outcome dictionary in a production payment seam | Byte-identical receipt re-derived on node v23 |
 | WEXP Interop Test Lab | Live AER-1 receipt mapped into WEXP Core-02 | Both appraisers matched the expected results in all five cases |
-| Staford Titus (AMEP) | Blind fixture test, results committed before the run | Both independent runs matched on every point; AER-1 in AMEP's Implementation Status |
+| Staford Titus (AMEP) | Blind fixture test, results committed before the run; refusal-fixture regression check shipped in the AMEP repo (interop/aer1-fixtures/regress.mjs) | Both independent runs matched on every point; AER-1 in AMEP's Implementation Status; the regression check runs both refusal fixtures as a digest-pinned pair and fails if the pin breaks |
 
 The corpus is the test: anyone can join this table by running it and posting their score on the conformance challenge above.
 
