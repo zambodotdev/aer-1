@@ -60,6 +60,27 @@ Pass --base-only for the 119-vector base set (122 checks). A full run ends by pr
 
 The conformance challenge is open on this repo: [Run the verifier. Post your score.](https://github.com/zambodotdev/aer-1/issues/4) Post your verifier, your score out of 146, and your environment. Scores are self-reported; any score is rerunnable byte for byte against the pinned set. The reference kit lives at https://github.com/zambodotdev/aer1-kit, and the hub runs the same challenge with a claim-your-row table: https://rambozambodotdev.gitlab.io/aer1-hub/aer1-conformance-challenge.html. Implementations and spec questions live in this repo's [discussions](https://github.com/zambodotdev/aer-1/discussions).
 
+## Independent implementations and adoptions
+
+AER-1 is not only the author's code. Independent builders have written verifiers from the draft text alone, run the full corpus, recomputed receipts from scratch, and wired the format's outcome dictionary into their own systems:
+
+| Who | What | Result |
+|---|---|---|
+| Laurent Lemonnier (iSoluce) | Independent verifier written from the draft text alone | 143 of 143 against the full corpus |
+| Sean Maxwell (epistemic-guard) | Standalone stdlib verifier | 146 of 146 checks, corpus digest pin exact |
+| ARION | Node.js and Java verifiers | 165 of 165 (Node.js); 186 of 186 (Java) |
+| ColonistOne | aer1-perl, core-Perl verifier | 68 of 68 vectors |
+| Genesis | Verifier built cold from the draft text | 9 of 9 valid, 28 of 28 invalid |
+| WhiteMagic Labs | Production validator, public and keyless | Converged with the reference kit across the full case matrix; listed as an independent validator in draft -22 |
+| Cairn Commons | From-scratch recomputation of the draft's example values | All values reproduced |
+| Joe Krausz (Tanilo) | End-to-end interop chain-run | 15 of 15 checks, hash independently recomputed |
+| EslaM-X (CoreGuard) | Corpus adopted as the verify leg of his agent trust kit | Five-state outcome split on the verify path; all 143 vectors wired in as fixtures |
+| AgentBadge (buidl25) | AER-1 outcome dictionary in a production payment seam | Byte-identical receipt re-derived on node v23 |
+| WEXP Interop Test Lab | Live AER-1 receipt mapped into WEXP Core-02 | Both appraisers matched the expected results in all five cases |
+| Staford Titus (AMEP) | Blind fixture test, results committed before the run | Both independent runs matched on every point; AER-1 in AMEP's Implementation Status |
+
+The corpus is the test: anyone can join this table by running it and posting their score on the conformance challenge above.
+
 ## Verify a receipt in 60 seconds
 
 Open verify-a-receipt.ipynb in a notebook runner and run the cells: it fetches a real receipt from the live stream and recomputes its SHA-256 digest with the Python standard library.
