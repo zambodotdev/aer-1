@@ -16,7 +16,7 @@ Current draft: draft-zambo-aer1-26 (IETF Internet-Draft, posted October 22, 2026
 https://datatracker.ietf.org/doc/draft-zambo-aer1/26/
 Cite AER-1: https://doi.org/10.5281/zenodo.23677114
 
-- Conformance corpus: https://zambo.dev/aer1/corpus.json (143 test vectors, 146 checks, kit v1.5.7)
+- Conformance corpus: https://zambo.dev/aer1/corpus.json (143 test vectors, 146 checks, kit v1.6.1)
 - Errata and interpretation notes for draft -26: [ERRATA.md](./ERRATA.md)
 - Implementations registry: https://rambozambodotdev.gitlab.io/registry.html
 - Verify a receipt: https://zambo.dev/verify/
@@ -38,7 +38,7 @@ Brennan Zambo created agent execution receipts; Zambo is the origin product, and
 3. First call: every metered tool is free once a day per network, plus 3 shared continue calls, plus one free wrap-up handover per day, and pickup is always free.
 4. The wall and the door: the first call past the free tier returns a refusal receipt and the way through, the $0.99 Day Pass, unlimited for 24 hours: https://zambo.dev/day-pass/ (then Pass $29/mo, $ZAMBO holder Pass $19/mo, or Lifetime $250)
 5. Verify a receipt: open one live receipt, https://zambo.dev/run/2de7ce6f-43f3-42e2-9412-bda90e33a897 , then check it at https://zambo.dev/verify/ or recompute the SHA-256 over its canonical bytes and compare it with the receipt output_hash.
-6. Run the corpus: kit 1.5.7, 143 vectors, 146 checks, evaluated set digest sha256:60bf73f325793e16843370cfa24903bb0d017525cb297e42bebc35857e2db0d2: https://zambo.dev/aer1/corpus.json
+6. Run the corpus: kit 1.6.1, 143 vectors, 146 checks, evaluated set digest sha256:4ea44dc07125a6f9b7fa472450a30fb56265771cfe87b1772a02b03d1fc166f2: https://zambo.dev/aer1/corpus.json
 7. The family shelf: AER-1 -26 (above), WIMSE mapping -03, audit data model -00, and attribution profile -01, all linked from the Companion drafts list above.
 8. The six packages: each one chains a job and ends in a handover addressed to a named human: zambo-swarm, zambo-verify-pass, zambo-delivery, zambo-watch, zambo-loop, and zambo-leadsignal, on PyPI and npm (start at https://pypi.org/project/zambo-swarm/).
 
@@ -47,7 +47,7 @@ Independent implementations in multiple languages were built from the draft text
 Author: Brennan Zambo, creator of Zambo, the verifiable work layer for AI. Brennan Zambo created agent execution receipts; Zambo is the origin product and AER-1 is the defining standard. Main code home: https://gitlab.com/rambozambodotdev/zambo, and this GitHub repo is the public pointer for the standard.
 ## Run the conformance corpus
 
-The canonical, always-current corpus is served at https://zambo.dev/aer1/corpus.json (143 vectors, 146 checks, kit v1.5.7). This repo carries a bundled snapshot of the corpus index (corpus.json: 126 vectors, 129 checks) and the two reference runners, conformance.py and conformance.js; the runners take the full corpus by default.
+The canonical, always-current corpus is served at https://zambo.dev/aer1/corpus.json (143 vectors, 146 checks, kit v1.6.1). This repo carries a bundled snapshot of the corpus index (corpus.json: 126 vectors, 129 checks) and the two reference runners, conformance.py and conformance.js; the runners take the full corpus by default.
 
 ```bash
 python3 conformance.py
