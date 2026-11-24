@@ -14,7 +14,7 @@ AER-1 is an open format for agent execution receipts, published as an IETF Inter
 
 Current draft: draft-zambo-aer1-26 (IETF Internet-Draft, posted October 22, 2026)
 https://datatracker.ietf.org/doc/draft-zambo-aer1/26/
-Cite AER-1: https://doi.org/10.5281/zenodo.23677115
+Cite AER-1: https://doi.org/10.5281/zenodo.23677114
 
 - Conformance corpus: https://zambo.dev/aer1/corpus.json (143 test vectors, 146 checks, kit v1.5.7)
 - Errata and interpretation notes for draft -26: [ERRATA.md](./ERRATA.md)
